@@ -1,0 +1,22 @@
+# --- Dependencies & build output ---
+node_modules/
+dist/
+backend/target/
+
+# --- IDE ---
+.idea/
+*.iml
+
+# --- Secrets: never commit these ---
+.env
+*.env
+backend/.env
+
+# --- Spring Boot config with real values ---
+# Only .example versions are committed; copy one and fill in your values locally.
+backend/src/main/resources/application.properties
+backend/src/main/resources/application-*.properties
+
+# Allow the safe template files
+!backend/src/main/resources/application.properties.example
+!backend/src/main/resources/application-local.properties.example

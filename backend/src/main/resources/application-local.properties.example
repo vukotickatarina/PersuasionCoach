@@ -1,0 +1,17 @@
+# Kopiraj ovaj fajl kao application-local.properties i popuni stvarnim vrijednostima.
+# application-local.properties je u .gitignore i NIKAD ne smije biti commitovan.
+
+# Database
+spring.datasource.password=YOUR_DB_PASSWORD
+
+# JWT
+app.jwt.secret=YOUR_JWT_SECRET_MIN_32_CHARS
+
+# Mail
+spring.mail.password=YOUR_GMAIL_APP_PASSWORD
+
+# Anthropic Claude AI
+anthropic.api.key=YOUR_ANTHROPIC_API_KEY
+
+# Google Gemini AI (nije u upotrebi, ali potrebno ako se aktivira)
+gemini.api.key=YOUR_GEMINI_API_KEY

@@ -1,0 +1,56 @@
+# ============================================================
+# TEMPLATE — kopiraj kao application.properties, pa postavi
+# environment varijable (IntelliJ Run Config ili System Env).
+# Nikad ne commituj application.properties sa stvarnim tajnama.
+# ============================================================
+
+# Server
+server.port=8080
+server.address=0.0.0.0
+spring.application.name=persuasion-coach
+
+# Database (PostgreSQL)
+spring.datasource.url=jdbc:postgresql://localhost:5432/persuasioncoach
+spring.datasource.username=postgres
+spring.datasource.password=${DB_PASSWORD}
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# JPA / Hibernate
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.open-in-view=false
+
+# JWT
+app.jwt.secret=${JWT_SECRET}
+app.jwt.expiration=86400000
+
+# File Upload
+spring.servlet.multipart.enabled=true
+spring.servlet.multipart.max-file-size=50MB
+spring.servlet.multipart.max-request-size=50MB
+app.upload.dir=uploads
+
+# CORS
+app.cors.allowed-origins=http://localhost:5173,http://localhost:3000
+
+# Mail
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=noreply@persuasioncoach.com
+spring.mail.password=${MAIL_PASSWORD}
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+# Anthropic Claude AI
+anthropic.api.key=${ANTHROPIC_API_KEY}
+
+# Google Gemini AI (nije u upotrebi)
+gemini.api.key=${GEMINI_API_KEY}
+gemini.api.url=https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent
+
+# OpenAPI / Swagger
+springdoc.api-docs.path=/api-docs
+springdoc.swagger-ui.path=/swagger-ui.html
+springdoc.swagger-ui.operationsSorter=alpha
