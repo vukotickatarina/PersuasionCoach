@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { API } from "../../services/api";
 
 interface Props {
   onNavigate: (screen: string) => void;
@@ -30,12 +31,16 @@ export function RegisterScreen({ onNavigate, onLoginSuccess }: Props) {
     setErrors({});
     setApiError("");
     setLoading(true);
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 15000);
     try {
-      const res = await fetch(`http://${window.location.hostname}:8080/api/auth/register`, {
+      const res = await fetch(`${API}/auth/register`, {
+        signal: controller.signal,
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: form.name, email: form.email, password: form.password }),
       });
+      clearTimeout(timer);
       const data = await res.json();
       if (!res.ok) {
         setApiError(data.message || "Registracija nije uspjela.");
@@ -46,8 +51,13 @@ export function RegisterScreen({ onNavigate, onLoginSuccess }: Props) {
       localStorage.setItem("onboardingCompleted", "false");
       onLoginSuccess?.(data.data.user);
       onNavigate("onboarding");
-    } catch {
-      setApiError("Greška pri povezivanju sa serverom.");
+    } catch (err) {
+      clearTimeout(timer);
+      if (err instanceof Error && err.name === "AbortError") {
+        setApiError("Zahtjev je istekao. Provjerite vezu sa serverom.");
+      } else {
+        setApiError("Greška pri povezivanju sa serverom.");
+      }
     } finally {
       setLoading(false);
     }

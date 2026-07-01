@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { API } from "../../services/api";
 
 interface Props {
   onNavigate: (screen: string) => void;
@@ -18,12 +19,16 @@ export function LoginScreen({ onNavigate, onLoginSuccess }: Props) {
     if (!email || !password) { setError("Molimo unesite e-mail i lozinku."); return; }
     setError("");
     setLoading(true);
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 15000);
     try {
-      const res = await fetch(`http://${window.location.hostname}:8080/api/auth/login`, {
+      const res = await fetch(`${API}/auth/login`, {
+        signal: controller.signal,
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+      clearTimeout(timer);
       const data = await res.json();
       if (!res.ok) {
         setError(data.message || "Pogrešan e-mail ili lozinka.");
@@ -39,8 +44,13 @@ export function LoginScreen({ onNavigate, onLoginSuccess }: Props) {
       } else {
         onNavigate("dashboard");
       }
-    } catch {
-      setError("Greška pri povezivanju sa serverom.");
+    } catch (err) {
+      clearTimeout(timer);
+      if (err instanceof Error && err.name === "AbortError") {
+        setError("Zahtjev je istekao. Provjerite vezu sa serverom.");
+      } else {
+        setError("Greška pri povezivanju sa serverom.");
+      }
     } finally {
       setLoading(false);
     }

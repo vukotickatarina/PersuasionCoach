@@ -12,11 +12,9 @@ backend/target/
 *.env
 backend/.env
 
-# --- Spring Boot config with real values ---
-# Only .example versions are committed; copy one and fill in your values locally.
-backend/src/main/resources/application.properties
-backend/src/main/resources/application-*.properties
+# --- Local dev profile may hold real secrets ---
+# Copy application-local.properties.example → application-local.properties and fill in your values.
+backend/src/main/resources/application-local.properties
 
-# Allow the safe template files
-!backend/src/main/resources/application.properties.example
+# Allow .example template files
 !backend/src/main/resources/application-local.properties.example

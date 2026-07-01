@@ -1,17 +1,37 @@
-# Kopiraj ovaj fajl kao application-local.properties i popuni stvarnim vrijednostima.
-# application-local.properties je u .gitignore i NIKAD ne smije biti commitovan.
+# Local development profile template.
+# Copy to application-local.properties (gitignored) and customize if needed.
+# Run backend with: mvn spring-boot:run -Dspring-boot.run.profiles=local
+# (from the backend/ directory)
 
-# Database
-spring.datasource.password=YOUR_DB_PASSWORD
+# --- H2 in-memory database — no PostgreSQL needed locally ---
+spring.datasource.url=jdbc:h2:mem:persuasioncoach;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
 
-# JWT
-app.jwt.secret=YOUR_JWT_SECRET_MIN_32_CHARS
+# --- Logging ---
+spring.jpa.show-sql=true
+logging.level.com.persuasioncoach=DEBUG
+logging.level.org.springframework.security=DEBUG
 
-# Mail
-spring.mail.password=YOUR_GMAIL_APP_PASSWORD
+# --- JWT (local placeholder — NOT for production) ---
+# Decodes to 37 bytes / 296 bits. Safe for local dev only.
+app.jwt.secret=c2VjcmV0LWtleS1mb3ItbG9jYWwtZGV2ZWxvcG1lbnQtb25seQ==
 
-# Anthropic Claude AI
-anthropic.api.key=YOUR_ANTHROPIC_API_KEY
+# --- CORS ---
+app.cors.allowed-origins=http://localhost:5173,http://localhost:3000,http://localhost:4173
 
-# Google Gemini AI (nije u upotrebi, ali potrebno ako se aktivira)
-gemini.api.key=YOUR_GEMINI_API_KEY
+# --- Mail disabled locally ---
+spring.mail.host=localhost
+spring.mail.port=25
+spring.mail.username=noreply@local.dev
+spring.mail.password=disabled
+spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration
+
+# --- AI keys: replace with real values to test AI features ---
+anthropic.api.key=${ANTHROPIC_API_KEY:your-anthropic-api-key-here}
+gemini.api.key=${GEMINI_API_KEY:your-gemini-api-key-here}

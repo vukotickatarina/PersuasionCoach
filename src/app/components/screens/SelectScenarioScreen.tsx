@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ArrowLeft, Play, UserRound, HelpCircle, Users, Loader2 } from "lucide-react";
+import { API } from "../../services/api";
 
 interface Props {
   onNavigate: (screen: string) => void;
@@ -60,7 +61,7 @@ export function SelectScenarioScreen({ onNavigate, mode = "attacker", topicId, o
     }
     setLoading(true);
     setSelected(null);
-    fetch(`http://${window.location.hostname}:8080/api/topics/${topicId}/scenarios`)
+    fetch(`${API}/topics/${topicId}/scenarios`)
       .then(r => r.ok ? r.json() : Promise.reject(r.status))
       .then(data => {
         const list: Scenario[] = data?.data ?? [];

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Bell, LogOut, Zap, Target, TrendingUp, Swords, ChevronRight } from "lucide-react";
 import { BottomNav } from "../BottomNav";
+import { API } from "../../services/api";
 
 interface Props {
   onNavigate: (screen: string) => void;
@@ -55,11 +56,11 @@ export function DashboardScreen({ onNavigate, user }: Props) {
     const token = sessionStorage.getItem("authToken") ?? localStorage.getItem("authToken");
     if (!token) return;
     const h = { "Authorization": `Bearer ${token}` };
-    fetch(`http://${window.location.hostname}:8080/api/users/me/stats`, { headers: h })
+    fetch(`${API}/users/me/stats`, { headers: h })
       .then(r => r.ok ? r.json() : null)
       .then(data => { if (data?.data) setStats(data.data); })
       .catch(() => {});
-    fetch(`http://${window.location.hostname}:8080/api/notifications`, { headers: h })
+    fetch(`${API}/notifications`, { headers: h })
       .then(r => r.ok ? r.json() : null)
       .then(data => setNotifs(data?.data ?? []))
       .catch(() => {});

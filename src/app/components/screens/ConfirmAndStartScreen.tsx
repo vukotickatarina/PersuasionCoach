@@ -1,6 +1,7 @@
 ﻿import { ArrowLeft, Play, Loader2, Pencil, Heart, Briefcase, BookOpen, MessageCircle, Globe, Plus, Users, User, Zap, Swords, GraduationCap } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useState } from "react";
+import { API } from "../../services/api";
 
 interface Props {
   onNavigate: (screen: string) => void;
@@ -69,7 +70,7 @@ export function ConfirmAndStartScreen({
 
     try {
       const token = (sessionStorage.getItem("authToken") ?? localStorage.getItem("authToken")) ?? "";
-      const res = await fetch(`http://${window.location.hostname}:8080/api/conversations/start`, {
+      const res = await fetch(`${API}/conversations/start`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
